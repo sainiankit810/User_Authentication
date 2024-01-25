@@ -1,8 +1,10 @@
 const users = require('../models/userModel')
 const mongoose = require('mongoose');
 
+// update only when user is login
+
 const updateController = {
-    updateProfile: async (req, res) => {
+    updateProfile: async (req, res) => {   
         const _id = req.userId;
         const {name, password, contact} = req.body;
 
