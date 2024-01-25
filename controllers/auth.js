@@ -1,5 +1,6 @@
 const users = require('../models/userModel');
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userController = {
     signup: async (req, res) => {
@@ -30,7 +31,9 @@ const userController = {
             if(!isPasswordcrp){
                 return res.status(404).json({message: "Invalid credentials"})
             }
-            res.status(200).json({result: existUser});
+            const access_token = jwt.sign({email: existUser.email,_id:existUser?._id},process.env.ACCESS_TOKEN_SECRET)
+            res.header("authorization","bearer " + access_token)
+            res.status(200).json({result: existUser,access_token});
         } catch (error) {
             res.status(500).json('Something went wrong');
             console.log(error)
